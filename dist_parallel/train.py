@@ -45,6 +45,36 @@ os.environ["CUDA_VISIBLE_DEVICES"] = gpu_devices
 
 
 def main():
+    # set up logging
+
+    log_folder = Path('./results')
+    log_folder.mkdir(parents=True, exist_ok=True)
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    log_path = log_folder / f"{current_time}.txt"
+
+    level = getattr(logging, "INFO", None)
+    if not isinstance(level, int):
+        raise ValueError(f"level {level} not supported")
+    
+    logger = logging.getLogger()
+    logger.setLevel(level=level)
+
+    if logger.hasHandlers():
+        logger.handlers.clear()
+    
+    handeler1 = logging.StreamHandler()
+    handeler2 = logging.FileHandler(log_path, mode='w')
+
+    formatter = logging.Formatter("%(levelname)s - %(filename)s - %(asctime)s - %(message)s")
+    handeler1.setFormatter(formatter)
+    handeler2.setFormatter(formatter)
+
+    logger.addHandler(handeler1)
+    logger.addHandler(handeler2)
+
+    # device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    # logging.info(f"Using device: {device}")
+
     args = parser.parse_args()
 
     ngpus_per_node = torch.cuda.device_count()
@@ -56,13 +86,13 @@ def main():
 def main_worker(gpu, ngpus_per_node, args):
     args.gpu = gpu
     ngpus_per_node = torch.cuda.device_count()    
-    print("Use GPU: {} for training".format(args.gpu))
+    logging.info("Use GPU: {} for training".format(args.gpu))
         
     args.rank = args.rank * ngpus_per_node + gpu    
     dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                             world_size=args.world_size, rank=args.rank)
 
-    print('==> Making model..')
+    logging.info('==> Making model..')
     net = pyramidnet()
     torch.cuda.set_device(args.gpu)
     net.cuda(args.gpu)
@@ -70,9 +100,9 @@ def main_worker(gpu, ngpus_per_node, args):
     args.num_workers = int(args.num_workers / ngpus_per_node)
     net = torch.nn.parallel.DistributedDataParallel(net, device_ids=[args.gpu])
     num_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
-    print('The number of parameters of model is', num_params)
+    logging.info(f'The number of parameters of model is {num_params}')
 
-    print('==> Preparing data..')
+    logging.info('==> Preparing data..')
     transforms_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -127,12 +157,12 @@ def train(net, criterion, optimizer, train_loader, device):
         batch_time = time.time() - start
         
         if batch_idx % 20 == 0:
-            print('Epoch: [{}/{}]| loss: {:.3f} | acc: {:.3f} | batch time: {:.3f}s '.format(
+            logging.info('Epoch: [{}/{}]| loss: {:.3f} | acc: {:.3f} | batch time: {:.3f}s '.format(
                 batch_idx, len(train_loader), train_loss/(batch_idx+1), acc, batch_time))
     
     elapse_time = time.time() - epoch_start
     elapse_time = datetime.timedelta(seconds=elapse_time)
-    print("Training time {}".format(elapse_time))
+    logging.info("Training time {}".format(elapse_time))
     
 
 if __name__=='__main__':
