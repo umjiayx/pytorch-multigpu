@@ -1,0 +1,25 @@
+INFO - train.py - 2024-10-02 02:19:55,875 - Using device: cuda
+INFO - train.py - 2024-10-02 02:19:55,875 - ==> Preparing data..
+INFO - train.py - 2024-10-02 02:20:09,146 - ==> Making model..
+INFO - train.py - 2024-10-02 02:20:10,723 - The number of parameters of model is 24253410
+INFO - train.py - 2024-10-02 02:20:34,913 - Epoch: [0/391]| loss: 2.297 | acc: 14.844 | batch time: 22.365s 
+INFO - train.py - 2024-10-02 02:20:37,609 - Epoch: [20/391]| loss: 2.062 | acc: 22.210 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:40,113 - Epoch: [40/391]| loss: 1.972 | acc: 26.601 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:42,616 - Epoch: [60/391]| loss: 1.919 | acc: 28.138 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:45,117 - Epoch: [80/391]| loss: 1.853 | acc: 30.720 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:47,621 - Epoch: [100/391]| loss: 1.810 | acc: 32.712 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:50,119 - Epoch: [120/391]| loss: 1.765 | acc: 34.298 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:52,621 - Epoch: [140/391]| loss: 1.728 | acc: 35.843 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:55,121 - Epoch: [160/391]| loss: 1.695 | acc: 37.024 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:20:57,622 - Epoch: [180/391]| loss: 1.668 | acc: 37.996 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:00,125 - Epoch: [200/391]| loss: 1.635 | acc: 39.292 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:02,627 - Epoch: [220/391]| loss: 1.611 | acc: 40.279 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:05,128 - Epoch: [240/391]| loss: 1.586 | acc: 41.328 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:07,632 - Epoch: [260/391]| loss: 1.555 | acc: 42.478 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:10,133 - Epoch: [280/391]| loss: 1.531 | acc: 43.519 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:12,635 - Epoch: [300/391]| loss: 1.506 | acc: 44.498 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:15,135 - Epoch: [320/391]| loss: 1.481 | acc: 45.432 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:23,710 - Epoch: [340/391]| loss: 1.458 | acc: 46.362 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:26,210 - Epoch: [360/391]| loss: 1.435 | acc: 47.247 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:28,711 - Epoch: [380/391]| loss: 1.412 | acc: 48.171 | batch time: 0.124s 
+INFO - train.py - 2024-10-02 02:21:50,360 - Training time 0:01:39.581752
