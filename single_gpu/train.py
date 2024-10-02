@@ -15,23 +15,55 @@ from torch.utils.data import DataLoader
 
 from model import pyramidnet
 import argparse
-from tensorboardX import SummaryWriter
+# from tensorboardX import SummaryWriter
 
+import logging
+from pathlib import Path
 
 parser = argparse.ArgumentParser(description='cifar10 classification models')
 parser.add_argument('--lr', default=0.1, help='')
 parser.add_argument('--resume', default=None, help='')
-parser.add_argument('--batch_size', type=int, default=512, help='')
+parser.add_argument('--batch_size', type=int, default=128, help='')
 parser.add_argument('--num_worker', type=int, default=4, help='')
 args = parser.parse_args()
 
 
 def main():
-    best_acc = 0
+    # best_acc = 0
 
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    # Set up logger
+    log_folder = Path('./results')
+    log_folder.mkdir(parents=True, exist_ok=True)
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    log_path = log_folder / f"{current_time}.txt"
 
-    print('==> Preparing data..')
+    level = getattr(logging, "INFO", None)
+    if not isinstance(level, int):
+        raise ValueError(f"level {level} not supported")
+    
+    logger = logging.getLogger()
+    logger.setLevel(level=level)
+
+    if logger.hasHandlers():
+        logger.handlers.clear()
+    
+    handeler1 = logging.StreamHandler()
+    handeler2 = logging.FileHandler(log_path, mode='w')
+
+    formatter = logging.Formatter("%(levelname)s - %(filename)s - %(asctime)s - %(message)s")
+    handeler1.setFormatter(formatter)
+    handeler2.setFormatter(formatter)
+
+    logger.addHandler(handeler1)
+    logger.addHandler(handeler2)
+
+    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+    logging.info(f"Using device: {device}")
+
+
+    # device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
+    logging.info('==> Preparing data..')
     transforms_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -48,12 +80,12 @@ def main():
     classes = ('plane', 'car', 'bird', 'cat', 'deer', 
                'dog', 'frog', 'horse', 'ship', 'truck')
 
-    print('==> Making model..')
+    logging.info('==> Making model..')
 
     net = pyramidnet()
     net = net.to(device)
     num_params = sum(p.numel() for p in net.parameters() if p.requires_grad)
-    print('The number of parameters of model is', num_params)
+    logging.info(f'The number of parameters of model is {num_params}')
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=args.lr, 
@@ -92,13 +124,12 @@ def train(net, criterion, optimizer, train_loader, device):
         batch_time = time.time() - start
         
         if batch_idx % 20 == 0:
-            print('Epoch: [{}/{}]| loss: {:.3f} | acc: {:.3f} | batch time: {:.3f}s '.format(
+            logging.info('Epoch: [{}/{}]| loss: {:.3f} | acc: {:.3f} | batch time: {:.3f}s '.format(
                 batch_idx, len(train_loader), train_loss/(batch_idx+1), acc, batch_time))
     
     elapse_time = time.time() - epoch_start
     elapse_time = datetime.timedelta(seconds=elapse_time)
-    print("Training time {}".format(elapse_time))
+    logging.info("Training time {}".format(elapse_time))
     
-
 if __name__=='__main__':
     main()
