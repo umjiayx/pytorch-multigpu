@@ -1,0 +1,5 @@
+INFO - train.py - 2024-10-03 20:34:38,522 - Using device: cuda
+INFO - train.py - 2024-10-03 20:34:38,523 - ==> Preparing data..
+INFO - train.py - 2024-10-03 20:34:39,229 - ==> Making model..
+INFO - train.py - 2024-10-03 20:34:39,703 - The number of parameters of model is 24253410
+INFO - train.py - 2024-10-03 20:34:43,282 - Epoch: [0/25]| loss: 2.349 | acc: 10.986 | batch time: 2.903s 
