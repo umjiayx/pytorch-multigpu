@@ -56,7 +56,8 @@ def args_parser():
     parser.add_argument('--rank', default=0, type=int, help='')
     parser.add_argument('--world_size', default=1, type=int, help='')
     parser.add_argument('--distributed', action='store_true', help='')
-    return parser
+    args = parser.parse_args()
+    return args
 
 
 def main():
@@ -91,10 +92,9 @@ def main():
     # logging.info(f"Using device: {device}")    
     
     '''
-
-    parser = args_parser()
-    args = parser.parse_args()
-
+    
+    args = args_parser()
+    
     ngpus_per_node = torch.cuda.device_count() # 4
     args.world_size = ngpus_per_node * args.world_size # 4 * 1 = 4
     
