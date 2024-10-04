@@ -21,6 +21,7 @@ python train.py --gpu_devices 0 1 2 3 --batch_size 768
 ```
 
 ### DistributedDataParallel
+Tested on umich Lighthouse.
 ```
 cd dist_parallel
 python train.py --gpu_device 0 1 2 3 --batch_size 768
